@@ -11,9 +11,16 @@ import System.Environment (
  )
 import System.IO.Error
 import System.Info
+#ifdef mingw32_HOST_OS
+getEffectiveUserName :: IO String
+getEffectiveUserName = return "anon"
+
+getProcessID :: IO Int
+getProcessID = return 1337
+#else 
 import System.Posix.Process (getProcessID)
 import System.Posix.User (getEffectiveUserName)
-
+#endif 
 
 {- | Create a 'Process' 'Resource' based off of the current process' knowledge
  of itself.
